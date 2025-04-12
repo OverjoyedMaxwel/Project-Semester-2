@@ -3,3 +3,5 @@ target: MU_Person.h student.h main.cpp
 
 test: MU_Person.h student.h main.cpp
 	g++ main.cpp -o a.out
+run: inh
+	 ./inh
