@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
       if (fout) {  
       
        cout << "Successfully writing to text file." << endl;
-       for (int i = 1; i < argc; i+=4) {
+       for (int i = 1; i < argc; i+=7) {
             string n=argv[i+3];
           fout << atoi(argv[i]) <<" "<< atoi(argv[i+1]) <<" "<<  atoi(argv[i+2]) <<" "<< n <<" "
-          << atoi(argv[i+4]) << atoi(argv[i+5]) << atoi(argv[i+6]) ;
+          << atoi(argv[i+4]) << " " << atoi(argv[i+5]) << " " << atoi(argv[i+6]) << " " ;
        }
  
        fout << endl;
