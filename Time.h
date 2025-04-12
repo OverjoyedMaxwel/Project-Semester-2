@@ -1,17 +1,45 @@
-#include <iostream>
-using namespace std;
+//#include <iostream>
+//using namespace std;
 
-class Time{
+//#include "Time.h"
+#include <iomanip>
+#include "student.h"
+
+class Time:public student{
 private:	
-    int m,h,s;
+    int minute,hour,second;
 
 public:
     void set_time(int=0,int=0,int=0);
     void display();
     void get_time();
     Time operator-(Time);
-
+    Time(long=0,long=111 ,long=2,string="Nattawut",int=0 ,int=0, int=0);
+    ~Time();
 };
+
+Time::Time(long n1,long i, long g,string s,int h,int m,int sec):student(n1,i,g,s){
+    // Finish constructor to set all values
+        //id = i;
+        //name = s;
+        hour = h;
+        minute = m;
+        second = sec;         
+        cout<<"Time constructor  "<< setfill('0') << setw(2) << hour << ":" 
+        << setfill('0') << setw(2) << minute << ":" 
+        << setfill('0') << setw(2) << second << endl;
+        cout<<"-------"<<endl;
+             
+      
+    }
+
+Time::~Time(){
+     //cout<<"-------"<<endl;
+     cout<<"TIME destructor "<< setfill('0') << setw(2) << hour << ":" 
+     << setfill('0') << setw(2) << minute << ":" 
+     << setfill('0') << setw(2) << second << endl; 
+     
+}
 
 void Time::set_time(int a,int b,int c){
     /*
@@ -19,10 +47,11 @@ void Time::set_time(int a,int b,int c){
     m = (b>60)?0:b;
     s = (c>60)?0:c;
     */
-    h=(a>0&&a<24)?a:0;
-    m=(b>0 && b<60)?b:0;
-    s=(c>0 && c<60)?c:0;
+    hour=(a>0&&a<24)?a:0;
+    minute=(b>0 && b<60)?b:0;
+    second=(c>0 && c<60)?c:0;
 }
+
 //typedef struct Time* TimePtr;
 
 void Time::get_time() {
@@ -41,9 +70,9 @@ void Time::get_time() {
 
     // แสดงผลในรูปแบบ hh:mm:ss
     cout << "Time: " 
-         << setfill('0') << setw(2) << h << ":" 
-         << setfill('0') << setw(2) << m << ":" 
-         << setfill('0') << setw(2) << s << endl;
+         << setfill('0') << setw(2) << hour << ":" 
+         << setfill('0') << setw(2) << minute<< ":" 
+         << setfill('0') << setw(2) << second << endl;
 }
 
 //create 3 functions
@@ -91,9 +120,11 @@ void Time::display(Time* time) {
 
 
 void Time::display() {
-    cout << setfill('0') << setw(2) << h << ":"
-         << setfill('0') << setw(2) << m << ":"
-         << setfill('0') << setw(2) << s << endl;
+    student::display();
+    cout << "TIME:" << setfill('0') << setw(2) << hour << ":"
+         << setfill('0') << setw(2) << minute << ":"
+         << setfill('0') << setw(2) << second << endl;
+    cout<<"-------"<<endl;
 }
 
 Time Time::operator-(Time x){
@@ -101,33 +132,33 @@ Time Time::operator-(Time x){
   
     Time t;
 
-    t.h=0;
-    t.m=0;
-    t.s=0;
+    t.hour=0;
+    t.minute=0;
+    t.second=0;
     
 
     
-    t.s=this->s - x.s;
-    if(t.s<0)
+    t.second=this->second - x.second;
+    if(t.second<0)
     {
-        t.m=-1;
-        t.s+=60;
+        t.minute=-1;
+        t.second+=60;
     }
-    t.m+=this->m - x.m;
+    t.minute+=this->minute - x.minute;
     
-    if(t.m<0)
+    if(t.minute<0)
     {
-        t.h=-1;
-        t.m+=60;
+        t.hour=-1;
+        t.minute+=60;
 
     }
     
-    t.h+=this->h - x.h;
+    t.hour+=this->hour - x.hour;
     
-    if(t.h<0)
+    if(t.hour<0)
     {
         
-        t.h+=24;
+        t.hour+=24;
 
     }
     

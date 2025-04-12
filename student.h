@@ -1,3 +1,4 @@
+
 #include "MU_Person.h"
 
 
@@ -18,14 +19,14 @@ student::student(long n1,long i, long g,string s):MU_person(n1,i,s){
     //name = s;
     gpa= g;         
     cout<<"DAY constructor  "<<gpa<<endl;
-    cout<<"-------"<<endl;
+    //cout<<"-------"<<endl;
          
   
 }
 student::~student(){
      //cout<<"-------"<<endl;
      cout<<"DAY destructor "<<gpa<<endl; 
-     cout<<"-------"<<endl;
+     //cout<<"-------"<<endl;
 }
 
 
@@ -36,6 +37,6 @@ void student::display(){
     //display_thai();
     MU_person::display();
     cout<<"DAY:"<<gpa<<endl;
-    cout<<"-------"<<endl;
+    //cout<<"-------"<<endl;
 }
 

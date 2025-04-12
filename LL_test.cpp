@@ -4,7 +4,8 @@
 //#include"STD_NODE.h"
 //#include "student.h"
 #include"LL.h"
-#include "student.h"
+//#include "student.h"
+#include "Time.h"
 using namespace std;
 int main(int argc, char *argv[])
 {  
@@ -19,7 +20,8 @@ int main(int argc, char *argv[])
        cout << "Successfully writing to text file." << endl;
        for (int i = 1; i < argc; i+=4) {
             string n=argv[i+3];
-          fout << atoi(argv[i]) <<" "<< atoi(argv[i+1]) <<" "<<  atoi(argv[i+2]) <<" "<< n <<" ";
+          fout << atoi(argv[i]) <<" "<< atoi(argv[i+1]) <<" "<<  atoi(argv[i+2]) <<" "<< n <<" "
+          << atoi(argv[i+4]) << atoi(argv[i+5]) << atoi(argv[i+6]) ;
        }
  
        fout << endl;
@@ -39,7 +41,9 @@ int main(int argc, char *argv[])
           cin >> n;
   
           for (int i = 0; i < n; ++i) {
-              int year, month, day;
+              
+            int year, month, day;
+            int hour, minute, second;
               float gpa;
               string name;
   
@@ -51,8 +55,12 @@ int main(int argc, char *argv[])
               cin >> day;
               cout << "Enter Homework Name: ";
               cin >> name;
+              cout << "Enter Hour,Minute,Second: ";
+              cin >> hour >> minute >> second;
+              
   
-              fout << year << " " << month << " " << day << " " << name << " ";
+              fout << year << " " << month << " " << day << " " << name << " " 
+              << hour << " " << minute << " " << second << " ";
           }
   
           fout << endl;
@@ -72,13 +80,14 @@ int main(int argc, char *argv[])
       LL A;
       NODE *t;
 
-      int nid, muid;
+      int year, month, day;
+      int hour, minute, second;
       float gpa;
       string name;
 
        // อ่านข้อมูลทีละ 4 ค่า (int, int, float, string)
-      while (fin >> nid >> muid >> gpa >> name) {
-          t = new student(nid, muid, gpa, name);
+      while (fin >> year >> month >> day >> name >> hour >> minute >> second) {
+          t = new Time(year, month, day, name, hour, minute, second);
           A.add_node(t);
       }
 

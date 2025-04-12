@@ -24,6 +24,7 @@ NODE::NODE(int x){
   }
 NODE:: ~NODE(){
         cout<<"Node "<<id<<" is being deleted"<<endl;
+        cout<<"-------"<<endl;
   }
 NODE* NODE::move_next(){
         return next;
