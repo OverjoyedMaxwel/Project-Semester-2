@@ -19,22 +19,22 @@ public:
 
 
 MU_person::~MU_person(){
-  cout<<"Destructor id="<<id<<endl;
+  cout<<"Destructor month="<<id<<endl;
 }
 MU_person::MU_person(long n1,long x,string n):NODE(n1){
    	  // Set up all MU_Person values
       //cout<<NODE::id;
       id = x;
       name = n;   
-      cout<<"MU person constructor "<<id<<endl;
+      cout<<"MONTH constructor "<<id<<endl;
 }
 
 void MU_person::display(){
       //display_thai();
       //show_node();
-      cout<<"ID:"<<id<<" name:"<<name<<endl;
+      cout<<"MONTH:"<<id<<" NAME:"<<name<<endl;
       
-      cout<<"My Thai id is ";
+      cout<<"YEAR:";
       cout<<NODE::id<<endl;
     
 }
