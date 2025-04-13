@@ -1,16 +1,19 @@
 #include <iostream>
 #include<cstdlib>
 #include <fstream>
+#include <vector>
 //#include"STD_NODE.h"
 //#include "student.h"
 #include"LL.h"
 //#include "student.h"
 #include "Time.h"
+#include "Data.h"
 using namespace std;
 int main(int argc, char *argv[])
 {  
    int choice;
-   cout << "Type \"0\" = Write to file[argv] \"1\" = Write to file[cin] \"2\" = Read to file \"3\" = Delete file Data"<< endl ;
+   cout << "Type \"0\" = Write to file[argv] \"1\" = Write to file[cin] \"2\" = Read to file"
+   << " \"3\" = Delete file Data \"4\" = BubbleSort Data Descending" << endl ;
    cin >> choice ;
    
    if(choice == 0){   
@@ -107,5 +110,41 @@ int main(int argc, char *argv[])
       }
       fout.close();
   }
+
+  else if (choice == 4) {
+    ifstream fin("demo4.txt");
+    if (!fin) {
+        cerr << "Cannot open demo4.txt for reading." << endl;
+        return 1;
+    }
+
+    vector<Data> dataList;
+    Data temp;
+
+    while (fin >> temp.year >> temp.month >> temp.day >> temp.name >> temp.hour >> temp.minute >> temp.second) {
+        dataList.push_back(temp);
+    }
+    fin.close();
+
+    // เรียงข้อมูล
+    bubbleSort(dataList);
+
+    // เขียนข้อมูลใหม่กลับไปในไฟล์ (เขียนทับ)
+    ofstream fout("demo4.txt", ios::trunc);
+    if (!fout) {
+        cerr << "Cannot open demo4.txt for writing." << endl;
+        return 1;
+    }
+
+    for (int i = 0; i < dataList.size(); ++i) {
+        Data d = dataList[i];
+        fout << d.year << " " << d.month << " " << d.day << " " 
+             << d.name << " " << d.hour << " " << d.minute << " " << d.second << " ";
+    }
+    fout << endl;
+    fout.close();
+
+    cout << "Data sorted by time (descending) and updated in file." << endl;
+}
   return 0;
 }
