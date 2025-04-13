@@ -2,6 +2,8 @@
 #include<cstdlib>
 #include <fstream>
 #include <vector>
+#include <ctime>
+#include <string>
 //#include"STD_NODE.h"
 //#include "student.h"
 #include"LL.h"
@@ -12,8 +14,9 @@ using namespace std;
 int main(int argc, char *argv[])
 {  
    int choice;
-   cout << "Type \"0\" = Write to file[argv] \"1\" = Write to file[cin] \"2\" = Read to file"
-   << " \"3\" = Delete file Data \"4\" = BubbleSort Data Descending" << endl ;
+   cout << "Type \"0\" = Write to file[argv]" << endl << "\"1\" = Write to file[cin]"
+   << endl << "\"2\" = Read to file" << endl << "\"3\" = Delete file Data"
+   << endl << "\"4\" = BubbleSort Descending" << endl << "\"5\" = Homework Reminder" <<endl ;
    cin >> choice ;
    
    if(choice == 0){   
@@ -145,6 +148,56 @@ int main(int argc, char *argv[])
     fout.close();
 
     cout << "Data sorted by time (descending) and updated in file." << endl;
-}
-  return 0;
+    }
+  
+    else if (choice == 5) {
+        ifstream fin("demo4.txt");
+        if (!fin) {
+            cerr << "Cannot open demo4.txt" << endl;
+            return 1;
+        }
+    
+        vector<Data> dataList;
+        Data temp;
+        
+        // อ่านข้อมูลทั้งหมดลง vector
+        while (fin >> temp.year >> temp.month >> temp.day >> temp.name >> temp.hour >> temp.minute >> temp.second) {
+            dataList.push_back(temp);
+        }
+        fin.close();
+    
+        // กรองเฉพาะข้อมูลที่เป็นอนาคต
+        vector<Data> futureData;
+        for (int i = 0; i < dataList.size(); ++i) {
+            if (isFuture(dataList[i])) {
+                futureData.push_back(dataList[i]);
+            }
+        }
+    
+        // เรียงข้อมูลแบบ Bubble Sort โดยเปรียบเทียบเวลาจริง
+        bubbleSortByTime(futureData);
+    
+        // เขียนข้อมูลใหม่ลงไฟล์ (แทนที่)
+        ofstream fout("demo4.txt", ios::trunc);
+        if (!fout) {
+            cerr << "Failed to open file for writing." << endl;
+            return 1;
+        }
+    
+        for (int i = 0; i < futureData.size(); ++i) {
+            fout << futureData[i].year << " "
+                 << futureData[i].month << " "
+                 << futureData[i].day << " "
+                 << futureData[i].name << " "
+                 << futureData[i].hour << " "
+                 << futureData[i].minute << " "
+                 << futureData[i].second << " ";
+        }
+        fout << endl;
+        fout.close();
+    
+        cout << "Filtered and sorted future data written to file." << endl;
+    }
+
+return 0;
 }
