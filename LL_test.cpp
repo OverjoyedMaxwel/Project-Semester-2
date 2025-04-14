@@ -20,60 +20,114 @@ int main(int argc, char *argv[])
    cin >> choice ;
    
    if(choice == 0){   
-      ofstream fout("demo4.txt", ios::app);
-      if (fout) {  
-      
-       cout << "Successfully writing to text file." << endl;
-       for (int i = 1; i < argc; i+=7) {
-            string n=argv[i+3];
-          fout << atoi(argv[i]) <<" "<< atoi(argv[i+1]) <<" "<<  atoi(argv[i+2]) <<" "<< n <<" "
-          << atoi(argv[i+4]) << " " << atoi(argv[i+5]) << " " << atoi(argv[i+6]) << " " ;
-       }
- 
-       fout << endl;
-      } else {
-         cout << "Error opening file!" << endl;
-      }
-      fout.close();   
+    vector<Data> dataList;
+
+    // ดึงข้อมูลจาก argv แล้วเก็บลง vector
+    for (int i = 1; i < argc; i += 7) {
+        Data d;
+        d.year = atoi(argv[i]);
+        d.month = atoi(argv[i + 1]);
+        d.day = atoi(argv[i + 2]);
+        d.name = argv[i + 3];
+        d.hour = atoi(argv[i + 4]);
+        d.minute = atoi(argv[i + 5]);
+        d.second = atoi(argv[i + 6]);
+
+        // ตรวจสอบความถูกต้องของข้อมูล
+        if (!isValidDate(d.year, d.month, d.day) ||
+            d.hour < 0 || d.hour > 23 ||
+            d.minute < 0 || d.minute > 59 ||
+            d.second < 0 || d.second > 59) {
+
+            cout << "มีข้อมูลที่รับมาไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง" << endl;
+            return 1;
+        }
+
+        dataList.push_back(d);
+    }
+
+    // ถ้าข้อมูลทุกชุดถูกต้อง ค่อยเขียนลงไฟล์
+    ofstream fout("demo4.txt", ios::app);
+    if (fout) {
+        cout << "Successfully writing to text file." << endl;
+
+        for (int i = 0; i < dataList.size(); ++i) {
+            int year = dataList[i].year;
+            int month = dataList[i].month;
+            int day = dataList[i].day;
+            string name = dataList[i].name;
+            int hour = dataList[i].hour;
+            int minute = dataList[i].minute;
+            int second = dataList[i].second;
+
+            fout << year << " " << month << " " << day << " " << name << " "
+                 << hour << " " << minute << " " << second << " ";
+        }
+
+        fout << endl;
+        fout.close();
+    } else {
+        cout << "Error opening file!" << endl;
+    }  
    }
    
    else if(choice == 1){   
-      ofstream fout("demo4.txt", ios::app);
-      if (fout) {  
-          cout << "Successfully writing to file." << endl;
-  
-          int n;
-          cout << "Enter number of homework: ";
-          cin >> n;
-  
-          for (int i = 0; i < n; ++i) {
-              
-            int year, month, day;
-            int hour, minute, second;
-              float gpa;
-              string name;
-  
-              cout << "Enter Year: ";
-              cin >> year;
-              cout << "Enter Month: ";
-              cin >> month;
-              cout << "Enter Day: ";
-              cin >> day;
-              cout << "Enter Homework Name: ";
-              cin >> name;
-              cout << "Enter Hour,Minute,Second: ";
-              cin >> hour >> minute >> second;
-              
-  
-              fout << year << " " << month << " " << day << " " << name << " " 
-              << hour << " " << minute << " " << second << " ";
-          }
-  
-          fout << endl;
-      } else {
-          cerr << "Error opening file!" << endl;
-      }
-      fout.close();   
+    vector<Data> dataList;
+    int n;
+
+    cout << "Enter number of homework: ";
+    cin >> n;
+
+    for (int i = 0; i < n; ++i) {
+        Data d;
+
+        cout << "Enter Year: ";
+        cin >> d.year;
+        cout << "Enter Month: ";
+        cin >> d.month;
+        cout << "Enter Day: ";
+        cin >> d.day;
+        cout << "Enter Homework Name: ";
+        cin >> d.name;
+        cout << "Enter Hour, Minute, Second: ";
+        cin >> d.hour >> d.minute >> d.second;
+
+        // ตรวจสอบวันเวลา
+        if (!isValidDate(d.year, d.month, d.day) ||
+            d.hour < 0 || d.hour > 23 ||
+            d.minute < 0 || d.minute > 59 ||
+            d.second < 0 || d.second > 59) {
+
+            cout << "มีข้อมูลที่รับมาไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง" << endl;
+            return 1;
+        }
+
+        dataList.push_back(d);
+    }
+
+    // ถ้าข้อมูลทั้งหมดถูกต้อง ค่อยเขียนลงไฟล์
+    ofstream fout("demo4.txt", ios::app);
+    if (fout) {
+        cout << "Successfully writing to file." << endl;
+
+        for (int i = 0; i < dataList.size(); ++i) {
+            int year = dataList[i].year;
+            int month = dataList[i].month;
+            int day = dataList[i].day;
+            string name = dataList[i].name;
+            int hour = dataList[i].hour;
+            int minute = dataList[i].minute;
+            int second = dataList[i].second;
+
+            fout << year << " " << month << " " << day << " " << name << " "
+                 << hour << " " << minute << " " << second << " ";
+        }
+
+        fout << endl;
+        fout.close();
+    } else {
+        cerr << "Error opening file!" << endl;
+    }
   }
 
    else if(choice == 2){

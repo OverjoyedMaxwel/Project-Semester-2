@@ -78,3 +78,16 @@ void bubbleSortByTime(vector<Data>& dataList) {
         }
     }
 }
+
+bool isValidDate(int year, int month, int day) {
+    if (year < 0 || month < 1 || month > 12 || day < 1) return false;
+
+    int daysInMonth[] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+
+    // เช็คปีอธิกสุรทิน (Leap Year)
+    if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+        daysInMonth[1] = 29;
+    }
+
+    return day <= daysInMonth[month - 1];
+}
