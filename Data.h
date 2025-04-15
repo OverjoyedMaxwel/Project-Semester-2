@@ -40,7 +40,8 @@ bool isFuture(const Data& d) {
     t.tm_sec = d.second;
 
     time_t taskTime = mktime(&t);
-    return difftime(taskTime, time(0)) > 0;
+    //return difftime(taskTime, time(0)) > 0;
+    return taskTime > time(0);
 }
 
 // เปรียบเทียบว่าข้อมูล d1 ใกล้ปัจจุบันมากกว่าหรือไม่
@@ -63,7 +64,8 @@ bool compareByTime(const Data& d1, const Data& d2) {
     time_t time1 = mktime(&t1);
     time_t time2 = mktime(&t2);
 
-    return difftime(time1, time2) < 0;
+    //return difftime(time1, time2) < 0;
+    return time1 < time2;
 }
 
 
