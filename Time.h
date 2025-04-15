@@ -3,9 +3,9 @@
 
 //#include "Time.h"
 #include <iomanip>
-#include "student.h"
+#include "Day.h"
 
-class Time:public student{
+class Time:public Day{
 private:	
     int minute,hour,second;
 
@@ -18,7 +18,7 @@ public:
     ~Time();
 };
 
-Time::Time(long n1,long i, long g,string s,int h,int m,int sec):student(n1,i,g,s){
+Time::Time(long n1,long i, long g,string s,int h,int m,int sec):Day(n1,i,g,s){
     // Finish constructor to set all values
         //id = i;
         //name = s;
@@ -120,7 +120,7 @@ void Time::display(Time* time) {
 
 
 void Time::display() {
-    student::display();
+    Day::display();
     cout << "TIME:" << setfill('0') << setw(2) << hour << ":"
          << setfill('0') << setw(2) << minute << ":"
          << setfill('0') << setw(2) << second << endl;

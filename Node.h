@@ -7,7 +7,7 @@ using namespace std;
 
 class NODE{
 protected:    
-    int id;
+    int year;
     NODE* next;
 public:
       NODE(int=111);
@@ -18,19 +18,19 @@ public:
     };
 
 NODE::NODE(int x){
-        id=x;
+        year=x;
         next=NULL;
         cout<<"adding "<< x<<endl;
   }
 NODE:: ~NODE(){
-        cout<<"Node "<<id<<" is being deleted"<<endl;
+        cout<<"Node "<<year<<" is being deleted"<<endl;
         cout<<"-------"<<endl;
   }
 NODE* NODE::move_next(){
         return next;
   }
 void  NODE:: display(){
-           cout<<"Node data:"<<id<<endl;
+           cout<<"Node data:"<<year<<endl;
    }
 void NODE::insert(NODE*& x){
        x->next=this;
