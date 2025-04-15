@@ -19,7 +19,7 @@ public:
 
 
 Month::~Month(){
-  cout<<"Destructor month="<<month<<endl;
+  cout<<"MONTH destructor "<<month<<endl;
 }
 Month::Month(long n1,long x,string n):NODE(n1){
    	  // Set up all MU_Person values
@@ -32,9 +32,9 @@ Month::Month(long n1,long x,string n):NODE(n1){
 void Month::display(){
       //display_thai();
       //show_node();
-      cout<<"MONTH:"<<month<<" NAME:"<<name<<endl;
-      
+      cout<<"NAME:"<<name<<endl;
       cout<<"YEAR:";
       cout<<NODE::year<<endl;
-    
+      cout<<"MONTH:"<<month<<endl;
+      
 }

@@ -18,7 +18,7 @@ Day::Day(long n1,long i, long g,string s):Month(n1,i,s){
     //id = i;
     //name = s;
     day= g;         
-    cout<<"DAY constructor  "<<day<<endl;
+    cout<<"DAY constructor "<<day<<endl;
     //cout<<"-------"<<endl;
          
   

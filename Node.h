@@ -20,17 +20,17 @@ public:
 NODE::NODE(int x){
         year=x;
         next=NULL;
-        cout<<"adding "<< x<<endl;
+        cout<<"NODE constructor "<< x <<endl;
   }
 NODE:: ~NODE(){
-        cout<<"Node "<<year<<" is being deleted"<<endl;
+        cout<<"NODE destructor "<< year <<endl;
         cout<<"-------"<<endl;
   }
 NODE* NODE::move_next(){
         return next;
   }
 void  NODE:: display(){
-           cout<<"Node data:"<<year<<endl;
+           cout<<"NODE:"<<year<<endl;
    }
 void NODE::insert(NODE*& x){
        x->next=this;

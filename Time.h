@@ -25,7 +25,7 @@ Time::Time(long n1,long i, long g,string s,int h,int m,int sec):Day(n1,i,g,s){
         hour = h;
         minute = m;
         second = sec;         
-        cout<<"Time constructor  "<< setfill('0') << setw(2) << hour << ":" 
+        cout<<"TIME constructor "<< setfill('0') << setw(2) << hour << ":" 
         << setfill('0') << setw(2) << minute << ":" 
         << setfill('0') << setw(2) << second << endl;
         cout<<"-------"<<endl;
@@ -69,7 +69,7 @@ void Time::get_time() {
     
 
     // แสดงผลในรูปแบบ hh:mm:ss
-    cout << "Time: " 
+    cout << "TIME: " 
          << setfill('0') << setw(2) << hour << ":" 
          << setfill('0') << setw(2) << minute<< ":" 
          << setfill('0') << setw(2) << second << endl;

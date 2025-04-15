@@ -77,6 +77,9 @@ void processChoice(int choice, int argc, char* argv[]) {
              return ;
           }
           cout << "Successfully read to text file." << endl;
+          cout<<"-------"<<endl;
+          cout<<"CONSTRUCTOR:"<<endl;
+          cout<<"=========================================="<<endl;
           LL A;
           NODE *t;
     
@@ -91,10 +94,16 @@ void processChoice(int choice, int argc, char* argv[]) {
               A.add_node(t);
           }
     
+        cout<<"DATALIST:"<<endl;
+        cout<<"=========================================="<<endl;
+
           A.show_all();
           // highestGPA(t);  // ถ้าคุณมีฟังก์ชันนี้
           
           fin.close();
+          
+        cout<<"DESTRUCTOR:"<<endl;
+        cout<<"=========================================="<<endl;
         
        } 
        
