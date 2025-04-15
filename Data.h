@@ -93,3 +93,53 @@ bool isValidDate(int year, int month, int day) {
 
     return day <= daysInMonth[month - 1];
 }
+
+bool isValidTime(const Data& d) {
+    return isValidDate(d.year, d.month, d.day) &&
+           d.hour >= 0 && d.hour <= 23 &&
+           d.minute >= 0 && d.minute <= 59 &&
+           d.second >= 0 && d.second <= 59;
+}
+
+void writeDataToFile(const vector<Data>& dataList, const string& filename = "demo4.txt") {
+    ofstream fout(filename, ios::app);  // เขียนแบบต่อท้าย (append)
+    if (fout) {
+        cout << "Successfully writing to text file." << endl;
+
+        for (int i = 0; i < dataList.size(); ++i) {
+            fout << dataList[i].year << " "
+                 << dataList[i].month << " "
+                 << dataList[i].day << " "
+                 << dataList[i].name << " "
+                 << dataList[i].hour << " "
+                 << dataList[i].minute << " "
+                 << dataList[i].second << " ";
+        }
+
+        fout << endl;
+        fout.close();
+    } else {
+        cerr << "Error opening file!" << endl;
+    }
+}
+
+void writeDataToFileTruncate(const vector<Data>& dataList, const string& filename) {
+    ofstream fout(filename, ios::trunc);  // เปิดแบบเขียนทับ (truncate)
+    if (!fout) {
+        cerr << "Failed to open file for writing." << endl;
+        return;
+    }
+
+    for (int i = 0; i < dataList.size(); ++i) {
+        fout << dataList[i].year << " "
+             << dataList[i].month << " "
+             << dataList[i].day << " "
+             << dataList[i].name << " "
+             << dataList[i].hour << " "
+             << dataList[i].minute << " "
+             << dataList[i].second << " ";
+    }
+
+    fout << endl;
+    fout.close();
+}

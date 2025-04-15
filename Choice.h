@@ -26,41 +26,15 @@ void processChoice(int choice, int argc, char* argv[]) {
             d.second = atoi(argv[i + 6]);
     
             // ตรวจสอบความถูกต้องของข้อมูล
-            if (!isValidDate(d.year, d.month, d.day) ||
-                d.hour < 0 || d.hour > 23 ||
-                d.minute < 0 || d.minute > 59 ||
-                d.second < 0 || d.second > 59) {
-    
+            if (!isValidTime(d)) {
                 cout << "มีข้อมูลที่รับมาไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง" << endl;
-                return ;
+                return;
             }
-    
             dataList.push_back(d);
         }
     
         // ถ้าข้อมูลทุกชุดถูกต้อง ค่อยเขียนลงไฟล์
-        ofstream fout("demo4.txt", ios::app);
-        if (fout) {
-            cout << "Successfully writing to text file." << endl;
-    
-            for (int i = 0; i < dataList.size(); ++i) {
-                int year = dataList[i].year;
-                int month = dataList[i].month;
-                int day = dataList[i].day;
-                string name = dataList[i].name;
-                int hour = dataList[i].hour;
-                int minute = dataList[i].minute;
-                int second = dataList[i].second;
-    
-                fout << year << " " << month << " " << day << " " << name << " "
-                     << hour << " " << minute << " " << second << " ";
-            }
-    
-            fout << endl;
-            fout.close();
-        } else {
-            cout << "Error opening file!" << endl;
-        }  
+        writeDataToFile(dataList); 
        }
        
     else if(choice == 1){   
@@ -85,41 +59,15 @@ void processChoice(int choice, int argc, char* argv[]) {
             cin >> d.hour >> d.minute >> d.second;
     
             // ตรวจสอบวันเวลา
-            if (!isValidDate(d.year, d.month, d.day) ||
-                d.hour < 0 || d.hour > 23 ||
-                d.minute < 0 || d.minute > 59 ||
-                d.second < 0 || d.second > 59) {
-    
+            if (!isValidTime(d)) {
                 cout << "มีข้อมูลที่รับมาไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง" << endl;
-                return ;
+                return;
             }
-    
             dataList.push_back(d);
         }
     
         // ถ้าข้อมูลทั้งหมดถูกต้อง ค่อยเขียนลงไฟล์
-        ofstream fout("demo4.txt", ios::app);
-        if (fout) {
-            cout << "Successfully writing to file." << endl;
-    
-            for (int i = 0; i < dataList.size(); ++i) {
-                int year = dataList[i].year;
-                int month = dataList[i].month;
-                int day = dataList[i].day;
-                string name = dataList[i].name;
-                int hour = dataList[i].hour;
-                int minute = dataList[i].minute;
-                int second = dataList[i].second;
-    
-                fout << year << " " << month << " " << day << " " << name << " "
-                     << hour << " " << minute << " " << second << " ";
-            }
-    
-            fout << endl;
-            fout.close();
-        } else {
-            cerr << "Error opening file!" << endl;
-        }
+        writeDataToFile(dataList);
       }
     
     else if(choice == 2){
@@ -179,19 +127,7 @@ void processChoice(int choice, int argc, char* argv[]) {
         bubbleSort(dataList);
     
         // เขียนข้อมูลใหม่กลับไปในไฟล์ (เขียนทับ)
-        ofstream fout("demo4.txt", ios::trunc);
-        if (!fout) {
-            cerr << "Cannot open demo4.txt for writing." << endl;
-            return ;
-        }
-    
-        for (int i = 0; i < dataList.size(); ++i) {
-            Data d = dataList[i];
-            fout << d.year << " " << d.month << " " << d.day << " " 
-                 << d.name << " " << d.hour << " " << d.minute << " " << d.second << " ";
-        }
-        fout << endl;
-        fout.close();
+        writeDataToFileTruncate(dataList, "demo4.txt");
     
         cout << "Data sorted by time (descending) and updated in file." << endl;
         }
@@ -225,30 +161,14 @@ void processChoice(int choice, int argc, char* argv[]) {
             }
     
             if (hasPastData) {
-                cout << "พบบางข้อมูลที่เลยกำหนดมาแล้ว เราจึงนำมันออกจากไฟล์ไป" << endl;
+                cout << "เราพบข้อมูลที่เลยกำหนด(อดีต) และเราได้นำข้อมูลดังกล่าวออกจากไฟล์ไปเรียบร้อย" << endl;
             }
         
             // เรียงข้อมูลแบบ Bubble Sort โดยเปรียบเทียบเวลาจริง
             bubbleSortByTime(futureData);
         
             // เขียนข้อมูลใหม่ลงไฟล์ (แทนที่)
-            ofstream fout("demo4.txt", ios::trunc);
-            if (!fout) {
-                cerr << "Failed to open file for writing." << endl;
-                return ;
-            }
-        
-            for (int i = 0; i < futureData.size(); ++i) {
-                fout << futureData[i].year << " "
-                     << futureData[i].month << " "
-                     << futureData[i].day << " "
-                     << futureData[i].name << " "
-                     << futureData[i].hour << " "
-                     << futureData[i].minute << " "
-                     << futureData[i].second << " ";
-            }
-            fout << endl;
-            fout.close();
+            writeDataToFileTruncate(futureData, "demo4.txt");
         
             cout << "Filtered and sorted future data written to file." << endl;
         }
@@ -257,3 +177,4 @@ void processChoice(int choice, int argc, char* argv[]) {
         cout << "Invalid choice!" << endl;
     }
 }
+
