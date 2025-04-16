@@ -42,7 +42,7 @@ void processChoice(int choice, int argc, char* argv[]) {
         vector<Data> dataList;
         int n;
     
-        /*gotoxy(20,30);*/ 
+        
         cout << "Enter number of homework: ";
         cin >> n;
     
