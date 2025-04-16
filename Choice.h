@@ -4,7 +4,7 @@
 #include <string>       // สำหรับ string
 #include <cstdlib>      // สำหรับ atoi()
 #include <ctime>        // สำหรับเวลาปัจจุบัน (time, tm, localtime)
-//#include <windows.h>    // control terminal
+//#include <Windows.h>    // control terminal
 
 #include"LL.h"
 //#include "student.h"
@@ -183,6 +183,40 @@ void processChoice(int choice, int argc, char* argv[]) {
         
             cout << "Filtered and sorted future data written to file." << endl;
         }
+    else if (choice == '6') {
+        ifstream fin("demo4.txt");
+        if (!fin) {
+            cout << "Cannot open demo4.txt" << endl;
+            return ;
+        }
+    
+        vector<Data> dataList;
+        Data temp;
+        
+        // อ่านข้อมูลทั้งหมดลง vector
+        while (fin >> temp.year >> temp.month >> temp.day >> temp.name >> temp.hour >> temp.minute >> temp.second) {
+            dataList.push_back(temp);
+        }
+        fin.close();
+
+        int n,i;
+        vector<Data> OneDeletedData;
+        cout << "Enter number of homework: ";
+        cin >> n;
+        for (i=0;i<dataList.size(); ++i){
+            if(i == n){
+                continue;
+            }
+            else{
+                OneDeletedData.push_back(dataList[i]);
+            }
+        }
+        writeDataToFileTruncate(OneDeletedData, "demo4.txt");
+        cout << "Deleted homework and written to file." << endl;
+
+        
+
+    }
 
     else if(choice!='x'){
         cout << "Invalid choice!" << endl;

@@ -4,12 +4,6 @@
 #include <vector>
 #include <ctime>
 #include <string>
-//#include"STD_NODE.h"
-//#include "student.h"
-//#include"LL.h"
-//#include "student.h"
-//#include "Time.h"
-//#include "Data.h"
 #include "Choice.h"
 using namespace std;
 void main_menu();
@@ -30,6 +24,8 @@ int main(int argc, char *argv[])
    gotoxy(36,17);
    cout << "\"5\" = Homework Reminder" <<endl ;
    gotoxy(36,18);
+   cout << "\"6\" = Delete a homework" <<endl ;
+   gotoxy(36,19);
    cin >> choice ;
    
    processChoice(choice, argc, argv);
