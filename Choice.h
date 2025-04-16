@@ -4,14 +4,15 @@
 #include <string>       // สำหรับ string
 #include <cstdlib>      // สำหรับ atoi()
 #include <ctime>        // สำหรับเวลาปัจจุบัน (time, tm, localtime)
+//#include <windows.h>    // control terminal
 
 #include"LL.h"
 //#include "student.h"
 #include "Time.h"
 #include "Data.h"
-
+void gotoxy( short, short);
 void processChoice(int choice, int argc, char* argv[]) {
-    if(choice == 0){   
+    if(choice == '0'){   
         vector<Data> dataList;
     
         // ดึงข้อมูลจาก argv แล้วเก็บลง vector
@@ -37,10 +38,11 @@ void processChoice(int choice, int argc, char* argv[]) {
         writeDataToFile(dataList); 
        }
        
-    else if(choice == 1){   
+    else if(choice == '1'){   
         vector<Data> dataList;
         int n;
     
+        /*gotoxy(20,30);*/ 
         cout << "Enter number of homework: ";
         cin >> n;
     
@@ -70,7 +72,7 @@ void processChoice(int choice, int argc, char* argv[]) {
         writeDataToFile(dataList);
       }
     
-    else if(choice == 2){
+    else if(choice == '2'){
           ifstream fin("demo4.txt");
           if (!fin) {
              cerr << "Cannot open demo4.txt" << endl;
@@ -107,7 +109,7 @@ void processChoice(int choice, int argc, char* argv[]) {
         
        } 
        
-    else if (choice == 3) {
+    else if (choice == '3') {
           ofstream fout("demo4.txt", ios::trunc); // ล้างไฟล์
           if (fout) {
               cout << "File cleared successfully." << endl;
@@ -117,7 +119,7 @@ void processChoice(int choice, int argc, char* argv[]) {
           fout.close();
       }
     
-    else if (choice == 4) {
+    else if (choice == '4') {
         ifstream fin("demo4.txt");
         if (!fin) {
             cerr << "Cannot open demo4.txt for reading." << endl;
@@ -141,10 +143,10 @@ void processChoice(int choice, int argc, char* argv[]) {
         cout << "Data sorted by time (descending) and updated in file." << endl;
         }
       
-    else if (choice == 5) {
+    else if (choice == '5') {
             ifstream fin("demo4.txt");
             if (!fin) {
-                cerr << "Cannot open demo4.txt" << endl;
+                cout << "Cannot open demo4.txt" << endl;
                 return ;
             }
         
@@ -182,8 +184,15 @@ void processChoice(int choice, int argc, char* argv[]) {
             cout << "Filtered and sorted future data written to file." << endl;
         }
 
-    else {
+    else if(choice!='x'){
         cout << "Invalid choice!" << endl;
     }
 }
-
+void gotoxy( short x, short y ) 
+{ 
+    std::cout << "\033[" << y << ";" << x << "H";
+    /*HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE) ; 
+    COORD position = { x, y } ; 
+     
+    SetConsoleCursorPosition( hStdout, position ) ;*/ 
+}  
