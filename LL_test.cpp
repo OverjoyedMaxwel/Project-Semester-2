@@ -4,35 +4,60 @@
 #include <vector>
 #include <ctime>
 #include <string>
+#include <unistd.h>
 #include "Choice.h"
 using namespace std;
+void gotoxy( short, short);
 void main_menu();
+void drawFrame(int x, int y, int width, int height);
 int main(int argc, char *argv[])
-{  main_menu();
+{  //main_menu();
     while(true){
-   char choice;
-   gotoxy(36,12);
-   cout << "Type \"0\" = Write to file[argv]" << endl; 
-   gotoxy(36,13);
-   cout << "\"1\" = Write to file[cin]" << endl;
-   gotoxy(36,14); 
-   cout << "\"2\" = Read to file" << endl;
-   gotoxy(36,15);
-   cout << "\"3\" = Delete file Data" << endl;
-   gotoxy(36,16);
-   cout << "\"4\" = BubbleSort Descending" << endl;
-   gotoxy(36,17);
-   cout << "\"5\" = Homework Reminder" <<endl ;
-   gotoxy(36,18);
-   cout << "\"6\" = Delete a homework" <<endl ;
-   gotoxy(36,19);
-   cin >> choice ;
-   
-   processChoice(choice, argc, argv);
-    if(choice=='x')
-        {
+        char choice;
+        system("clear");
+        cout.flush();     
+        
+        main_menu();
+        cin.get();  
+        
+        system("clear");  
+        cout.flush();
+        
+        drawFrame(30, 1, 40, 9);
+        
+        gotoxy(36,2);
+        cout << "Type \"0\" = Write to file[argv]" << endl; 
+        gotoxy(36,3);
+        cout << "\"1\" = Write to file[cin]" << endl;
+        gotoxy(36,4); 
+        cout << "\"2\" = Read to file" << endl;
+        gotoxy(36,5);
+        cout << "\"3\" = Delete file Data" << endl;
+        gotoxy(36,6);
+        cout << "\"4\" = BubbleSort Descending" << endl;
+        gotoxy(36,7);
+        cout << "\"5\" = Homework Reminder" <<endl ;
+        gotoxy(36,8);
+        cout << "\"6\" = Delete a homework" <<endl ;
+        gotoxy(36,10);
+        cout << "Input: " ;
+        cin >> choice ;
+        
+        system("clear");
+        cout.flush();
+        //sleep(1);
+
+        processChoice(choice, argc, argv);
+        cin.ignore();
+        cin.get();
+        
+        //system("clear");
+        //cout.flush();
+        
+         if(choice=='x')
+            {
             break;
-        }
+            }
     }
     
     return 0;
@@ -40,7 +65,7 @@ int main(int argc, char *argv[])
 void main_menu()
 {
     char x;
-    gotoxy(1,3);
+    gotoxy(1,1);
     cout << R"(
   _   _                                         _                         _           _       
  | | | | ___  _ __ ___   _____      _____  _ __| | __  _ __ ___ _ __ ___ (_)_ __   __| | ___ _ __ 
@@ -50,3 +75,24 @@ void main_menu()
                                                                                                   
     )" << endl;
 }
+
+void drawFrame(int x, int y, int width, int height) {
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            // สมมติวาดเส้นขอบ
+            if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
+                gotoxy(x + j, y + i);
+                cout << "#";
+            }
+        }
+    }
+}
+
+void gotoxy( short x, short y ) 
+{ 
+    std::cout << "\033[" << y << ";" << x << "H";
+    /*HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE) ; 
+    COORD position = { x, y } ; 
+     
+    SetConsoleCursorPosition( hStdout, position ) ;*/ 
+}  

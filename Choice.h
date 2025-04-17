@@ -10,7 +10,7 @@
 //#include "student.h"
 #include "Time.h"
 #include "Data.h"
-void gotoxy( short, short);
+
 void processChoice(int choice, int argc, char* argv[]) {
     if(choice == '0'){   
         vector<Data> dataList;
@@ -78,8 +78,12 @@ void processChoice(int choice, int argc, char* argv[]) {
              cerr << "Cannot open demo4.txt" << endl;
              return ;
           }
+          cout<<""<<endl;
+          cout<<""<<endl;
           cout << "Successfully read to text file." << endl;
           cout<<"-------"<<endl;
+          //cout<<"-------"<<endl;
+          //sleep(1);
           cout<<"CONSTRUCTOR:"<<endl;
           cout<<"=========================================="<<endl;
           LL A;
@@ -107,7 +111,10 @@ void processChoice(int choice, int argc, char* argv[]) {
         cout<<"DESTRUCTOR:"<<endl;
         cout<<"=========================================="<<endl;
         
-       } 
+        //cin.ignore();
+        //cin.get();
+        
+        } 
        
     else if (choice == '3') {
           ofstream fout("demo4.txt", ios::trunc); // ล้างไฟล์
@@ -201,10 +208,16 @@ void processChoice(int choice, int argc, char* argv[]) {
 
         int n,i;
         vector<Data> OneDeletedData;
-        cout << "Enter number of homework: ";
+
+        cout << "Homework List:" << endl;
+        for (int i = 0; i < dataList.size(); ++i) {
+            cout << i + 1 << ". " << dataList[i].name << endl;
+        }
+
+        cout << "Choose the Number of Homework you want to Delete: ";
         cin >> n;
         for (i=0;i<dataList.size(); ++i){
-            if(i == n){
+            if(i == n-1){
                 continue;
             }
             else{
@@ -222,11 +235,3 @@ void processChoice(int choice, int argc, char* argv[]) {
         cout << "Invalid choice!" << endl;
     }
 }
-void gotoxy( short x, short y ) 
-{ 
-    std::cout << "\033[" << y << ";" << x << "H";
-    /*HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE) ; 
-    COORD position = { x, y } ; 
-     
-    SetConsoleCursorPosition( hStdout, position ) ;*/ 
-}  
