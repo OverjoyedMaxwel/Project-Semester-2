@@ -1,7 +1,7 @@
 #include "Node.h"
 
 class Month:public NODE{
-private: 
+protected: 
   long month;
   
 protected:

@@ -3,7 +3,7 @@
 
 
 class Day:public Month{
-private:
+protected:
           long day; 
 	
 public:

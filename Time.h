@@ -4,7 +4,7 @@
 using namespace std;
 
 class Time:public Day{
-private:	
+protected:	
     int minute,hour,second;
 
 public:

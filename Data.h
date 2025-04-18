@@ -143,3 +143,107 @@ void writeDataToFileTruncate(const vector<Data>& dataList, const string& filenam
     fout << endl;
     fout.close();
 }
+/*
+bool isFutureLL(const Time& node) {
+    tm t = {};
+    t.tm_year = node.year - 1900;  // ปีต้องลบ 1900
+    t.tm_mon = node.month - 1;     // เดือนต้องลบ 1
+    t.tm_mday = node.day;
+    t.tm_hour = node.hour;
+    t.tm_min = node.minute;
+    t.tm_sec = node.second;
+
+    time_t taskTime = mktime(&t); // แปลง tm เป็น time_t
+    return taskTime > time(0);    // เปรียบเทียบกับเวลาปัจจุบัน
+}
+
+bool compareByTimeLL(const Time& n1, const Time& n2) {
+    tm t1 = {}, t2 = {};
+    
+    // เปลี่ยนข้อมูลของ n1 เป็น time_t
+    t1.tm_year = n1.year - 1900;
+    t1.tm_mon = n1.month - 1;
+    t1.tm_mday = n1.day;
+    t1.tm_hour = n1.hour;
+    t1.tm_min = n1.minute;
+    t1.tm_sec = n1.second;
+
+    // เปลี่ยนข้อมูลของ n2 เป็น time_t
+    t2.tm_year = n2.year - 1900;
+    t2.tm_mon = n2.month - 1;
+    t2.tm_mday = n2.day;
+    t2.tm_hour = n2.hour;
+    t2.tm_min = n2.minute;
+    t2.tm_sec = n2.second;
+
+    time_t time1 = mktime(&t1);
+    time_t time2 = mktime(&t2);
+
+    // เปรียบเทียบเวลา
+    return time1 < time2;  // ถ้า time1 น้อยกว่า time2 จะส่งคืน true
+}
+
+void swapLL(Time* n1, Time* n2) {
+    int tempYear = n1->year;
+    int tempMonth = n1->month;
+    int tempDay = n1->day;
+    int tempHour = n1->hour;
+    int tempMinute = n1->minute;
+    int tempSecond = n1->second;
+    
+    // สลับข้อมูลระหว่าง n1 กับ n2
+    n1->year = n2->year;
+    n1->month = n2->month;
+    n1->day = n2->day;
+    n1->hour = n2->hour;
+    n1->minute = n2->minute;
+    n1->second = n2->second;
+    
+    n2->year = tempYear;
+    n2->month = tempMonth;
+    n2->day = tempDay;
+    n2->hour = tempHour;
+    n2->minute = tempMinute;
+    n2->second = tempSecond;
+}
+
+void bubbleSortByTimeLL(LL& A) {
+    bool swapped;
+    Time* current;
+    Time* lastSorted = nullptr;
+
+    // ทำการ bubble sort จนกว่าจะไม่มีการสลับตำแหน่ง
+    do {
+        swapped = false;
+        current = A.hol;  // เริ่มจาก node แรก
+
+        while (current->next != lastSorted) {
+            if (!compareByTimeLL(*current, *current->next)) {
+                // สลับตำแหน่งของ current กับ current->next
+                swapLL(current, current->next);
+                swapped = true;
+            }
+            current = current->next;  // ไปยัง node ถัดไป
+        }
+        lastSorted = current;  // node ล่าสุดที่จัดเรียงเสร็จแล้ว
+    } while (swapped);  // ถ้ายังมีการสลับตำแหน่งให้ทำซ้ำ
+}
+
+void writeDataToFileTruncateLL(LL& list, const string& filename) {
+    ofstream fout(filename, ios::trunc);  // ใช้ ios::trunc เพื่อเขียนทับไฟล์เดิม
+    if (!fout) {
+        cout << "Cannot open file to write." << endl;
+        return;
+    }
+    
+    Time* current = list.hol;
+    while (current != nullptr) {
+        fout << current->year << " " << current->month << " " << current->day << " "
+             << current->name << " " << current->hour << " " << current->minute << " "
+             << current->second << endl;
+        current = current->next;
+    }
+    
+    fout.close();
+}
+*/    

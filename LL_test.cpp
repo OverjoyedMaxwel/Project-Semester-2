@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         system("clear");  
         cout.flush();
         
-        drawFrame(30, 1, 40, 9);
+        drawFrame(30, 1, 50, 10);
         
         gotoxy(36,2);
         cout << "Type \"0\" = Write to file[argv]" << endl; 
@@ -32,14 +32,16 @@ int main(int argc, char *argv[])
         gotoxy(36,4); 
         cout << "\"2\" = Read to file" << endl;
         gotoxy(36,5);
-        cout << "\"3\" = Delete file Data" << endl;
+        cout << "\"3\" = Delete All files Data" << endl;
         gotoxy(36,6);
-        cout << "\"4\" = BubbleSort Descending" << endl;
+        cout << "\"4\" = BubbleSort Descending[vector<Data>]" << endl;
         gotoxy(36,7);
-        cout << "\"5\" = Homework Reminder" <<endl ;
+        cout << "\"5\" = Homework Reminder[vector<Data>]" <<endl ;
         gotoxy(36,8);
-        cout << "\"6\" = Delete a homework" <<endl ;
-        gotoxy(36,10);
+        cout << "\"6\" = Delete 1 file Data" <<endl ;
+        gotoxy(36,9);
+        cout << "\"7\" = Homework Reminder[Linklist]" <<endl ;
+        gotoxy(36,11);
         cout << "Input: " ;
         cin >> choice ;
         

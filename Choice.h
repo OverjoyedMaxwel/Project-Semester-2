@@ -230,7 +230,63 @@ void processChoice(int choice, int argc, char* argv[]) {
         
 
     }
+    /*
+    else if(choice == '7'){
+        ifstream fin("demo4.txt");
+        if (!fin) {
+        cout << "Cannot open demo4.txt" << endl;
+        return;
+        }
+    
+         LL A;  // สร้างลิงค์ลิสต์ใหม่
+         NODE* t;
+        int year, month, day, hour, minute, second;
+         string name;
 
+    // อ่านข้อมูลจากไฟล์และเพิ่มเข้าไปในลิงค์ลิสต์
+         while (fin >> year >> month >> day >> name >> hour >> minute >> second) {
+             t = new Time(year, month, day, hour, minute, second);
+             A.add_node(t);
+         }
+        fin.close();
+
+        // กรองเฉพาะข้อมูลที่เป็นอนาคต
+         Time* current = A.hol;
+         Time* prev = nullptr;
+         bool hasPastData = false;
+
+         while (current != nullptr) {
+              if (!isFutureLL(*current)) {  // ถ้าเป็นข้อมูลในอดีต
+                   hasPastData = true;
+                   Time* temp = current;
+                 if (prev == nullptr) {
+                     A.hol = current->next;  // ถ้าเป็นหัวให้ปรับหัวใหม่
+                     current = A.hol;
+                  } else {
+                     prev->next = current->next;
+                     current = current->next;
+                   }
+                   delete temp;
+             } else {
+                prev = current;
+                 current = current->next;
+              }
+         }
+
+    // ถ้ามีข้อมูลในอดีต
+         if (hasPastData) {
+             cout << "เราพบข้อมูลที่เลยกำหนด(อดีต) และเราได้นำข้อมูลดังกล่าวออกจากไฟล์ไปเรียบร้อย" << endl;
+          }
+
+    // เรียงข้อมูลที่เป็นอนาคต
+          bubbleSortByTimeLL(A);
+
+    // เขียนข้อมูลใหม่ลงไฟล์ (แทนที่ไฟล์เดิม)
+           writeDataToFileTruncateLL(A, "demo4.txt");
+
+         cout << "Filtered and sorted future data written to file." << endl;
+    }
+    */
     else if(choice!='x'){
         cout << "Invalid choice!" << endl;
     }
