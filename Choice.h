@@ -41,6 +41,7 @@ void processChoice(int choice, int argc, char* argv[]) {
     else if(choice == '1'){   
         vector<Data> dataList;
         int n;
+        int m;
     
         
         cout << "Enter number of homework: ";
@@ -55,8 +56,30 @@ void processChoice(int choice, int argc, char* argv[]) {
             cin >> d.month;
             cout << "Enter Day: ";
             cin >> d.day;
+            cout << "1 to use name presets / 0 for manual input: ";
+            cin >> m;
+            if(m){
+                int o;
+                int y=0;
+                string myText;
+                ifstream MyReadFile("presets.txt");
+                while (getline (MyReadFile, myText)) {
+                    cout << myText;
+                    cout << endl;
+                  }
+                  cin >> o;
+                  MyReadFile.clear( );
+                  MyReadFile.seekg( 0, std::ios::beg );
+
+                  while (getline (MyReadFile, myText)) {
+                    if(o==y) d.name=myText;
+                    else y++;
+                  }MyReadFile.close(); 
+            }
+            else{
             cout << "Enter Homework Name: ";
             cin >> d.name;
+            }
             cout << "Enter Hour, Minute, Second: ";
             cin >> d.hour >> d.minute >> d.second;
     
