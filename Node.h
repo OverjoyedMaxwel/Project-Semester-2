@@ -10,7 +10,7 @@ protected:
     int year;
     NODE* next;
 public:
-      NODE(int=111);
+      NODE(int=0);
       virtual void display();
       void insert(NODE*&);
       NODE* move_next();

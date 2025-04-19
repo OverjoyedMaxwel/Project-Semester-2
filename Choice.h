@@ -287,7 +287,10 @@ void processChoice(int choice, int argc, char* argv[]) {
          cout << "Filtered and sorted future data written to file." << endl;
     }
     */
-    else if(choice!='x'){
+    else if(choice!='8'){
         cout << "Invalid choice!" << endl;
     }
+    
+        
+    
 }

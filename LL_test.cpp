@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         system("clear");  
         cout.flush();
         
-        drawFrame(30, 1, 50, 10);
+        drawFrame(30, 1, 50, 11);
         
         gotoxy(36,2);
         cout << "Type \"0\" = Write to file[argv]" << endl; 
@@ -41,7 +41,9 @@ int main(int argc, char *argv[])
         cout << "\"6\" = Delete 1 file Data" <<endl ;
         gotoxy(36,9);
         cout << "\"7\" = Homework Reminder[Linklist]" <<endl ;
-        gotoxy(36,11);
+        gotoxy(36,10);
+        cout << "\"8\" = Exit program" <<endl; 
+        gotoxy(36,12);
         cout << "Input: " ;
         cin >> choice ;
         
@@ -56,7 +58,7 @@ int main(int argc, char *argv[])
         //system("clear");
         //cout.flush();
         
-         if(choice=='x')
+         if(choice=='8')
             {
             break;
             }
@@ -66,7 +68,6 @@ int main(int argc, char *argv[])
 }
 void main_menu()
 {
-    char x;
     gotoxy(1,1);
     cout << R"(
   _   _                                         _                         _           _       
