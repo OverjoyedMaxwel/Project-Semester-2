@@ -4,13 +4,14 @@
 #include <string>       // สำหรับ string
 #include <cstdlib>      // สำหรับ atoi()
 #include <ctime>        // สำหรับเวลาปัจจุบัน (time, tm, localtime)
-//#include <windows.h>    // control terminal
-
-#include"LL.h"
+#include <cctype>
+//#include <Windows.h>    // control terminal
+#include"Node.h"
+#include "LL.h"
 //#include "student.h"
 #include "Time.h"
 #include "Data.h"
-void gotoxy( short, short);
+
 void processChoice(int choice, int argc, char* argv[]) {
     if(choice == '0'){   
         vector<Data> dataList;
@@ -55,8 +56,41 @@ void processChoice(int choice, int argc, char* argv[]) {
             cin >> d.month;
             cout << "Enter Day: ";
             cin >> d.day;
-            cout << "Enter Homework Name: ";
-            cin >> d.name;
+            
+            char semi_choice = 'n';
+            cout << "Want to use Preset of Homework Names?[Y/N]: ";
+            
+            do{
+                cin >> semi_choice;
+
+                switch((char)tolower(semi_choice)){
+                case 'y': d.name = chooseHomeworkFromPresets(); break;    
+                case 'n': {
+                    cin.ignore();
+                    cout << "Enter Homework Name: ";
+                
+                    char c;
+                    d.name = "";  // เคลียร์ชื่อเก่า
+                    while (true) {
+                        c = cin.get(); // อ่านทีละตัวอักษร
+                
+                        if (c == '\n') break; // ถ้ากด Enter ให้หยุดอ่าน
+                
+                        if (c == ' ') {
+                            d.name += '_'; // แทนที่ช่องว่างด้วย underscore
+                        } else if (c >= 32 && c <= 126) {
+                            // เฉพาะตัวอักษรปกติ (ASCII printable characters)
+                            d.name += c;
+                        }
+                        // จะไม่ใช้ isalpha(), isdigit(), หรือฟังก์ชันพิเศษเลย
+                    } 
+                    break; 
+                }
+                default : cout << "Invalid Choice!" << endl; semi_choice = 'x';   
+                }
+            }while(semi_choice == 'x');    
+            //cout << "Enter Homework Name: ";
+            //cin >> d.name;
             cout << "Enter Hour, Minute, Second: ";
             cin >> d.hour >> d.minute >> d.second;
     
@@ -78,8 +112,12 @@ void processChoice(int choice, int argc, char* argv[]) {
              cerr << "Cannot open demo4.txt" << endl;
              return ;
           }
+          cout<<""<<endl;
+          cout<<""<<endl;
           cout << "Successfully read to text file." << endl;
           cout<<"-------"<<endl;
+          //cout<<"-------"<<endl;
+          //sleep(1);
           cout<<"CONSTRUCTOR:"<<endl;
           cout<<"=========================================="<<endl;
           LL A;
@@ -107,7 +145,10 @@ void processChoice(int choice, int argc, char* argv[]) {
         cout<<"DESTRUCTOR:"<<endl;
         cout<<"=========================================="<<endl;
         
-       } 
+        //cin.ignore();
+        //cin.get();
+        
+        } 
        
     else if (choice == '3') {
           ofstream fout("demo4.txt", ios::trunc); // ล้างไฟล์
@@ -161,6 +202,7 @@ void processChoice(int choice, int argc, char* argv[]) {
         
             // กรองเฉพาะข้อมูลที่เป็นอนาคต
             vector<Data> futureData;
+            vector<string> removedNames;
             bool hasPastData = false; // ตัวแปรไว้เช็คว่ามีข้อมูลในอดีตรึเปล่า
     
             for (int i = 0; i < dataList.size(); ++i) {
@@ -168,31 +210,135 @@ void processChoice(int choice, int argc, char* argv[]) {
                     futureData.push_back(dataList[i]);
                 } else {
                     hasPastData = true; // เจอข้อมูลในอดีต
+                    removedNames.push_back(dataList[i].name);
                 }
             }
     
             if (hasPastData) {
                 cout << "เราพบข้อมูลที่เลยกำหนด(อดีต) และเราได้นำข้อมูลดังกล่าวออกจากไฟล์ไปเรียบร้อย" << endl;
+                for (const auto& name : removedNames) {
+                    cout << "- " << name << '\n';
+                }
             }
         
             // เรียงข้อมูลแบบ Bubble Sort โดยเปรียบเทียบเวลาจริง
             bubbleSortByTime(futureData);
-        
+            // ถ้ามีเวลาตรงกัน ให้เรียงชื่อ A-Z ในเฉพาะกลุ่มที่ตรงกัน
+            bubbleSortByNameIfSameTime(futureData);
             // เขียนข้อมูลใหม่ลงไฟล์ (แทนที่)
             writeDataToFileTruncate(futureData, "demo4.txt");
         
             cout << "Filtered and sorted future data written to file." << endl;
         }
+    else if (choice == '6') {
+        ifstream fin("demo4.txt");
+        if (!fin) {
+            cout << "Cannot open demo4.txt" << endl;
+            return ;
+        }
+    
+        vector<Data> dataList;
+        Data temp;
+        
+        // อ่านข้อมูลทั้งหมดลง vector
+        while (fin >> temp.year >> temp.month >> temp.day >> temp.name >> temp.hour >> temp.minute >> temp.second) {
+            dataList.push_back(temp);
+        }
+        fin.close();
 
-    else if(choice!='x'){
-        cout << "Invalid choice!" << endl;
+        int n,i;
+        vector<Data> OneDeletedData;
+
+        cout << "Homework List:" << endl;
+        for (int i = 0; i < dataList.size(); ++i) {
+            cout << i + 1 << ". " << dataList[i].name << endl;
+        }
+
+        cout << "Choose the Number of Homework you want to Delete: " << endl;
+        cin >> n;
+        cout << dataList[n-1].name <<" is being removed..." << endl;
+        for (i=0;i<dataList.size(); ++i){
+            if(i == n-1){
+                continue;
+            }
+            else{
+                OneDeletedData.push_back(dataList[i]);
+            }
+        }
+        writeDataToFileTruncate(OneDeletedData, "demo4.txt");
+        cout << "Deleted homework and written to file." << endl;
+
+        
+
     }
+    
+    else if(choice == '7'){
+        LL list;
+        NODE *t;
+        std::ifstream fin("demo4.txt");
+        if (!fin) {
+            std::cout << "Cannot open demo4.txt" << std::endl;
+          return;
+        }
+
+        cout<<""<<endl;
+        cout<<""<<endl;
+        cout << "Successfully read to text file." << endl;
+        cout<<"-------"<<endl;
+          //cout<<"-------"<<endl;
+          //sleep(1);
+        cout<<"CONSTRUCTOR:"<<endl;
+        cout<<"=========================================="<<endl;
+
+        int y, m, d, h, mi, s;
+        std::string name;
+        std::vector<std::string> removedNames;
+        bool hasPastData = false; // ตัวแปรไว้เช็คว่ามีข้อมูลในอดีตรึเปล่า
+        while (fin >> y >> m >> d >> name >> h >> mi >> s) {
+            Data temp = { y, m, d, h, mi, s };
+            if (isFuture(temp)) {
+                t = new Time(y, m, d, name, h, mi, s);
+                list.add_node(t);
+            } else {
+                hasPastData = true; // เจอข้อมูลในอดีต
+                removedNames.push_back(name);
+            }
+         }
+        
+        if (hasPastData) {
+            cout << "เราพบข้อมูลที่เลยกำหนด(อดีต) และเราได้นำข้อมูลดังกล่าวออกจากไฟล์ไปเรียบร้อย" << endl;
+            for (const auto& n : removedNames) {
+                std::cout << "- " << n << '\n';
+            }
+        }
+        
+        fin.close();
+
+        //removePastLL(list.getHol()); // กรองอดีตออก
+        bubbleSortByTimeLL(list.getHol()); // เรียงเวลาใกล้ → ไกล
+        bubbleSortByNameLL(list.getHol()); // ถ้าเวลาเท่ากัน → เรียงตามชื่อ A-Z
+        writeToFileFromListLL(list.getHol(), "demo4.txt");
+
+        cout<<"DATALIST:"<<endl;
+        cout<<"=========================================="<<endl;
+
+        list.show_all(); 
+
+        std::cout << "เรียงและเขียนข้อมูลใหม่ลงไฟล์เรียบร้อยแล้ว" << std::endl;
+
+        cout<<"DESTRUCTOR:"<<endl;
+        cout<<"=========================================="<<endl;
 }
-void gotoxy( short x, short y ) 
-{ 
-    std::cout << "\033[" << y << ";" << x << "H";
-    /*HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE) ; 
-    COORD position = { x, y } ; 
-     
-    SetConsoleCursorPosition( hStdout, position ) ;*/ 
-}  
+    
+    else if(choice == '8'){
+        cout << "Good luck!" << endl;
+    }
+
+    else{
+        cout << "Invalid Choice!" << endl;
+    }
+
+}
+
+    
+
