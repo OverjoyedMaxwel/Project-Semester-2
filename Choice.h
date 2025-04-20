@@ -214,8 +214,9 @@ void processChoice(int choice, int argc, char* argv[]) {
             cout << i + 1 << ". " << dataList[i].name << endl;
         }
 
-        cout << "Choose the Number of Homework you want to Delete: ";
+        cout << "Choose the Number of Homework you want to Delete: " << endl;
         cin >> n;
+        cout << dataList[n-1].name <<" is being removed..." << endl;
         for (i=0;i<dataList.size(); ++i){
             if(i == n-1){
                 continue;
@@ -252,16 +253,20 @@ void processChoice(int choice, int argc, char* argv[]) {
         int y, m, d, h, mi, s;
         std::string name;
         while (fin >> y >> m >> d >> name >> h >> mi >> s) {
-            t = new Time(y, m, d, name, h, mi, s);
-            list.add_node(t);
+            Data temp = { y, m, d, h, mi, s };
+            if (isFuture(temp)) {
+                t = new Time(y, m, d, name, h, mi, s);
+                list.add_node(t);
+            }
          }
         
         
         
         fin.close();
 
-        removePastLL(list.getHol()); // กรองอดีตออก
+        //removePastLL(list.getHol()); // กรองอดีตออก
         bubbleSortByTimeLL(list.getHol()); // เรียงเวลาใกล้ → ไกล
+        
         writeToFileFromListLL(list.getHol(), "demo4.txt");
 
         cout<<"DATALIST:"<<endl;

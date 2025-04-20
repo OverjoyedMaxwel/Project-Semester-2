@@ -144,6 +144,7 @@ void writeDataToFileTruncate(const vector<Data>& dataList, const string& filenam
     fout.close();
 }
 
+/*
 bool isFutureLL(Time* t) {
     time_t now = time(0);
     tm* current = localtime(&now);
@@ -160,6 +161,8 @@ bool isFutureLL(Time* t) {
         return t->getMinute() > current->tm_min;
     return t->getSecond() > current->tm_sec;
 }
+*/
+
 
 time_t toTimeT(Time* t) {
     tm temp = {};
@@ -171,6 +174,7 @@ time_t toTimeT(Time* t) {
     temp.tm_sec  = t->getSecond();
     return mktime(&temp);
 }
+
 
 void bubbleSortByTimeLL(NODE*& head) {
     if (!head || !head->move_next()) return;
@@ -198,11 +202,12 @@ void bubbleSortByTimeLL(NODE*& head) {
     } while (swapped);
 }
 
+/*
 void removePastLL(NODE*& head) {
     while (head && !isFutureLL(dynamic_cast<Time*>(head))) {
         NODE* temp = head;
         head = head->move_next();
-        delete temp;
+        //delete temp;
     }
 
     NODE* curr = head;
@@ -211,12 +216,13 @@ void removePastLL(NODE*& head) {
         if (!isFutureLL(nextTime)) {
             NODE* temp = curr->move_next();
             curr->set_next(temp->move_next());
-            delete temp;
+            //delete temp;
         } else {
             curr = curr->move_next();
         }
     }
 }
+*/
 
 void writeToFileFromListLL(NODE* head, const std::string& filename) {
     std::ofstream fout(filename);
