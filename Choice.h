@@ -275,8 +275,15 @@ void processChoice(int choice, int argc, char* argv[]) {
         cout<<"=========================================="<<endl;
 }
     
-    else if(choice!='x'){
-        cout << "Invalid choice!" << endl;
+    else if(choice == '8'){
+        cout << "Good luck!" << endl;
+    }
+
+    else{
+        cout << "Invalid Choice!" << endl;
     }
 
 }
+
+    
+

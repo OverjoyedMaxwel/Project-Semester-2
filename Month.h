@@ -9,7 +9,7 @@ protected:
 	string name;
 
 public:
-	Month(long=0,long=112 ,string ="Prapaporn");
+	Month(long=0,long=0 ,string ="null");
   void display();
   ~Month();
 };
