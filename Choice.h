@@ -65,7 +65,27 @@ void processChoice(int choice, int argc, char* argv[]) {
 
                 switch((char)tolower(semi_choice)){
                 case 'y': d.name = chooseHomeworkFromPresets(); break;    
-                case 'n': cout << "Enter Homework Name: "; cin >> d.name; break;  
+                case 'n': {
+                    cin.ignore();
+                    cout << "Enter Homework Name: ";
+                
+                    char c;
+                    d.name = "";  // เคลียร์ชื่อเก่า
+                    while (true) {
+                        c = cin.get(); // อ่านทีละตัวอักษร
+                
+                        if (c == '\n') break; // ถ้ากด Enter ให้หยุดอ่าน
+                
+                        if (c == ' ') {
+                            d.name += '_'; // แทนที่ช่องว่างด้วย underscore
+                        } else if (c >= 32 && c <= 126) {
+                            // เฉพาะตัวอักษรปกติ (ASCII printable characters)
+                            d.name += c;
+                        }
+                        // จะไม่ใช้ isalpha(), isdigit(), หรือฟังก์ชันพิเศษเลย
+                    } 
+                    break; 
+                }
                 default : cout << "Invalid Choice!" << endl; semi_choice = 'x';   
                 }
             }while(semi_choice == 'x');    
