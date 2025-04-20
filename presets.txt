@@ -1,10 +1,8 @@
-=============
-1 Mathematics 
-2 Biology 
-3 Chemistry 
-4 Physics 
-5 Computer 
-6 Thai 
-7 English 
-=============
-Choice: 
+Mathematics 
+Biology 
+Chemistry 
+Physics 
+Computer 
+Thai 
+English 
+

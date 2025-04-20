@@ -4,6 +4,7 @@
 #include <string>       // สำหรับ string
 #include <cstdlib>      // สำหรับ atoi()
 #include <ctime>        // สำหรับเวลาปัจจุบัน (time, tm, localtime)
+#include <cctype>
 //#include <Windows.h>    // control terminal
 #include"Node.h"
 #include "LL.h"
@@ -55,8 +56,21 @@ void processChoice(int choice, int argc, char* argv[]) {
             cin >> d.month;
             cout << "Enter Day: ";
             cin >> d.day;
-            cout << "Enter Homework Name: ";
-            cin >> d.name;
+            
+            char semi_choice = 'n';
+            cout << "Want to use Preset of Homework Names?[Y/N]: ";
+            
+            do{
+                cin >> semi_choice;
+
+                switch((char)tolower(semi_choice)){
+                case 'y': d.name = chooseHomeworkFromPresets(); break;    
+                case 'n': cout << "Enter Homework Name: "; cin >> d.name; break;  
+                default : cout << "Invalid Choice!" << endl; semi_choice = 'x';   
+                }
+            }while(semi_choice == 'x');    
+            //cout << "Enter Homework Name: ";
+            //cin >> d.name;
             cout << "Enter Hour, Minute, Second: ";
             cin >> d.hour >> d.minute >> d.second;
     
@@ -168,6 +182,7 @@ void processChoice(int choice, int argc, char* argv[]) {
         
             // กรองเฉพาะข้อมูลที่เป็นอนาคต
             vector<Data> futureData;
+            vector<string> removedNames;
             bool hasPastData = false; // ตัวแปรไว้เช็คว่ามีข้อมูลในอดีตรึเปล่า
     
             for (int i = 0; i < dataList.size(); ++i) {
@@ -175,16 +190,21 @@ void processChoice(int choice, int argc, char* argv[]) {
                     futureData.push_back(dataList[i]);
                 } else {
                     hasPastData = true; // เจอข้อมูลในอดีต
+                    removedNames.push_back(dataList[i].name);
                 }
             }
     
             if (hasPastData) {
                 cout << "เราพบข้อมูลที่เลยกำหนด(อดีต) และเราได้นำข้อมูลดังกล่าวออกจากไฟล์ไปเรียบร้อย" << endl;
+                for (const auto& name : removedNames) {
+                    cout << "- " << name << '\n';
+                }
             }
         
             // เรียงข้อมูลแบบ Bubble Sort โดยเปรียบเทียบเวลาจริง
             bubbleSortByTime(futureData);
-        
+            // ถ้ามีเวลาตรงกัน ให้เรียงชื่อ A-Z ในเฉพาะกลุ่มที่ตรงกัน
+            bubbleSortByNameIfSameTime(futureData);
             // เขียนข้อมูลใหม่ลงไฟล์ (แทนที่)
             writeDataToFileTruncate(futureData, "demo4.txt");
         
@@ -252,21 +272,31 @@ void processChoice(int choice, int argc, char* argv[]) {
 
         int y, m, d, h, mi, s;
         std::string name;
+        std::vector<std::string> removedNames;
+        bool hasPastData = false; // ตัวแปรไว้เช็คว่ามีข้อมูลในอดีตรึเปล่า
         while (fin >> y >> m >> d >> name >> h >> mi >> s) {
             Data temp = { y, m, d, h, mi, s };
             if (isFuture(temp)) {
                 t = new Time(y, m, d, name, h, mi, s);
                 list.add_node(t);
+            } else {
+                hasPastData = true; // เจอข้อมูลในอดีต
+                removedNames.push_back(name);
             }
          }
         
-        
+        if (hasPastData) {
+            cout << "เราพบข้อมูลที่เลยกำหนด(อดีต) และเราได้นำข้อมูลดังกล่าวออกจากไฟล์ไปเรียบร้อย" << endl;
+            for (const auto& n : removedNames) {
+                std::cout << "- " << n << '\n';
+            }
+        }
         
         fin.close();
 
         //removePastLL(list.getHol()); // กรองอดีตออก
         bubbleSortByTimeLL(list.getHol()); // เรียงเวลาใกล้ → ไกล
-        
+        bubbleSortByNameLL(list.getHol()); // ถ้าเวลาเท่ากัน → เรียงตามชื่อ A-Z
         writeToFileFromListLL(list.getHol(), "demo4.txt");
 
         cout<<"DATALIST:"<<endl;

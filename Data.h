@@ -236,3 +236,113 @@ void writeToFileFromListLL(NODE* head, const std::string& filename) {
     }
     fout.close();
 }
+
+string chooseHomeworkFromPresets(const string& filename = "presets.txt") {
+    ifstream fin(filename);
+    vector<string> presets;
+
+    if (!fin) {
+        cout << "ไม่สามารถเปิดไฟล์ presets.txt ได้" << endl;
+        return "Unnamed"; // ค่า fallback
+    }
+
+    string line;
+    while (getline(fin, line)) {
+        if (!line.empty()) {
+            presets.push_back(line);
+        }
+    }
+    fin.close();
+
+    if (presets.empty()) {
+        cout << "ไม่มีข้อมูลชื่อการบ้านในไฟล์ presets.txt" << endl;
+        return "Unnamed";
+    }
+
+    // แสดงรายการชื่อการบ้านให้ผู้ใช้เลือก
+    cout << "\n===== Homework Preset Options =====" << endl;
+    for (size_t i = 0; i < presets.size(); ++i) {
+        cout << i + 1 << ". " << presets[i] << endl;
+    }
+
+    int choice = 0;
+    while (true) {
+        cout << "กรุณาเลือกหมายเลขที่ต้องการ (1 - " << presets.size() << "): ";
+        cin >> choice;
+
+        if (cin.fail() || choice < 1 || choice > (int)presets.size()) {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "ตัวเลือกไม่ถูกต้อง กรุณาเลือกใหม่อีกครั้ง" << endl;
+        } else {
+            break;
+        }
+    }
+
+    return presets[choice - 1];
+}
+
+void bubbleSortByNameLL(NODE*& head) {
+    if (!head || !head->move_next()) return;
+
+    bool swapped;
+    do {
+        swapped = false;
+        NODE** currPtr = &head;
+
+        while ((*currPtr) && (*currPtr)->move_next()) {
+            NODE* first = *currPtr;
+            NODE* second = first->move_next();
+
+            Time* t1 = dynamic_cast<Time*>(first);
+            Time* t2 = dynamic_cast<Time*>(second);
+
+            if (t1 && t2) {
+                // ตรวจสอบว่าทุก field ของวันเวลาเท่ากัน
+                if (t1->getYear() == t2->getYear() &&
+                    t1->getMonth() == t2->getMonth() &&
+                    t1->getDay() == t2->getDay() &&
+                    t1->getHour() == t2->getHour() &&
+                    t1->getMinute() == t2->getMinute() &&
+                    t1->getSecond() == t2->getSecond()) {
+                    
+                    // ถ้าชื่อของ first มากกว่า second ให้สลับ
+                    if (t1->getName() > t2->getName()) {
+                        first->set_next(second->move_next());
+                        second->set_next(first);
+                        *currPtr = second;
+                        swapped = true;
+                    }
+                }
+            }
+            currPtr = &((*currPtr)->next);
+        }
+    } while (swapped);
+}
+
+void bubbleSortByNameIfSameTime(std::vector<Data>& dataList) {
+    int n = dataList.size();
+    bool swapped;
+
+    do {
+        swapped = false;
+        for (int i = 0; i < n - 1; ++i) {
+            const Data& a = dataList[i];
+            const Data& b = dataList[i + 1];
+
+            // เช็คว่าเวลาทุกอย่างเท่ากัน
+            bool sameTime = (a.year == b.year &&
+                             a.month == b.month &&
+                             a.day == b.day &&
+                             a.hour == b.hour &&
+                             a.minute == b.minute &&
+                             a.second == b.second);
+
+            if (sameTime && a.name > b.name) {
+                swap(dataList[i], dataList[i + 1]);
+                swapped = true;
+            }
+        }
+        --n;
+    } while (swapped);
+}

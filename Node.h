@@ -6,6 +6,7 @@ using namespace std;
 
 
 class NODE{
+friend void bubbleSortByNameLL(NODE*& head);
 friend void bubbleSortByTimeLL(NODE*& head);
 friend void removePastLL(NODE*& head);
 protected:    
