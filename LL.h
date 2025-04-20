@@ -11,6 +11,10 @@ public:
     
        ~LL();
        LL();
+
+       NODE*& getHol() {
+        return hol;
+      }
       
 };
 

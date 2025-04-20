@@ -14,6 +14,14 @@ public:
     Time operator-(Time);
     Time(long=2025, long=12, long=30, string="Math", int=0, int=0, int=0);
     ~Time();
+    
+    int getYear() const { return year; }
+    int getMonth() const { return month; }
+    int getDay() const { return day; }
+    int getHour() const { return hour; }
+    int getMinute() const { return minute; }
+    int getSecond() const { return second; }
+    std::string getName() const { return name; }
 };
 
 Time::Time(long year,long month, long day,string name,int h,int m,int sec):Day(year,month,day,name){

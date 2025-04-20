@@ -143,107 +143,90 @@ void writeDataToFileTruncate(const vector<Data>& dataList, const string& filenam
     fout << endl;
     fout.close();
 }
-/*
-bool isFutureLL(const Time& node) {
-    tm t = {};
-    t.tm_year = node.year - 1900;  // ปีต้องลบ 1900
-    t.tm_mon = node.month - 1;     // เดือนต้องลบ 1
-    t.tm_mday = node.day;
-    t.tm_hour = node.hour;
-    t.tm_min = node.minute;
-    t.tm_sec = node.second;
 
-    time_t taskTime = mktime(&t); // แปลง tm เป็น time_t
-    return taskTime > time(0);    // เปรียบเทียบกับเวลาปัจจุบัน
+bool isFutureLL(Time* t) {
+    time_t now = time(0);
+    tm* current = localtime(&now);
+
+    if (t->getYear() != current->tm_year + 1900)
+        return t->getYear() > current->tm_year + 1900;
+    if (t->getMonth() != current->tm_mon + 1)
+        return t->getMonth() > current->tm_mon + 1;
+    if (t->getDay() != current->tm_mday)
+        return t->getDay() > current->tm_mday;
+    if (t->getHour() != current->tm_hour)
+        return t->getHour() > current->tm_hour;
+    if (t->getMinute() != current->tm_min)
+        return t->getMinute() > current->tm_min;
+    return t->getSecond() > current->tm_sec;
 }
 
-bool compareByTimeLL(const Time& n1, const Time& n2) {
-    tm t1 = {}, t2 = {};
-    
-    // เปลี่ยนข้อมูลของ n1 เป็น time_t
-    t1.tm_year = n1.year - 1900;
-    t1.tm_mon = n1.month - 1;
-    t1.tm_mday = n1.day;
-    t1.tm_hour = n1.hour;
-    t1.tm_min = n1.minute;
-    t1.tm_sec = n1.second;
-
-    // เปลี่ยนข้อมูลของ n2 เป็น time_t
-    t2.tm_year = n2.year - 1900;
-    t2.tm_mon = n2.month - 1;
-    t2.tm_mday = n2.day;
-    t2.tm_hour = n2.hour;
-    t2.tm_min = n2.minute;
-    t2.tm_sec = n2.second;
-
-    time_t time1 = mktime(&t1);
-    time_t time2 = mktime(&t2);
-
-    // เปรียบเทียบเวลา
-    return time1 < time2;  // ถ้า time1 น้อยกว่า time2 จะส่งคืน true
+time_t toTimeT(Time* t) {
+    tm temp = {};
+    temp.tm_year = t->getYear() - 1900;
+    temp.tm_mon  = t->getMonth() - 1;
+    temp.tm_mday = t->getDay();
+    temp.tm_hour = t->getHour();
+    temp.tm_min  = t->getMinute();
+    temp.tm_sec  = t->getSecond();
+    return mktime(&temp);
 }
 
-void swapLL(Time* n1, Time* n2) {
-    int tempYear = n1->year;
-    int tempMonth = n1->month;
-    int tempDay = n1->day;
-    int tempHour = n1->hour;
-    int tempMinute = n1->minute;
-    int tempSecond = n1->second;
-    
-    // สลับข้อมูลระหว่าง n1 กับ n2
-    n1->year = n2->year;
-    n1->month = n2->month;
-    n1->day = n2->day;
-    n1->hour = n2->hour;
-    n1->minute = n2->minute;
-    n1->second = n2->second;
-    
-    n2->year = tempYear;
-    n2->month = tempMonth;
-    n2->day = tempDay;
-    n2->hour = tempHour;
-    n2->minute = tempMinute;
-    n2->second = tempSecond;
-}
+void bubbleSortByTimeLL(NODE*& head) {
+    if (!head || !head->move_next()) return;
 
-void bubbleSortByTimeLL(LL& A) {
     bool swapped;
-    Time* current;
-    Time* lastSorted = nullptr;
-
-    // ทำการ bubble sort จนกว่าจะไม่มีการสลับตำแหน่ง
     do {
         swapped = false;
-        current = A.hol;  // เริ่มจาก node แรก
+        NODE** currPtr = &head;
 
-        while (current->next != lastSorted) {
-            if (!compareByTimeLL(*current, *current->next)) {
-                // สลับตำแหน่งของ current กับ current->next
-                swapLL(current, current->next);
+        while ((*currPtr) && (*currPtr)->move_next()) {
+            Time* t1 = dynamic_cast<Time*>(*currPtr);
+            Time* t2 = dynamic_cast<Time*>((*currPtr)->move_next());
+
+            if (t1 && t2 && toTimeT(t1) > toTimeT(t2)) {
+                // Swap pointers
+                NODE* tmp = (*currPtr)->move_next();
+                (*currPtr)->set_next(tmp->move_next());
+                tmp->set_next(*currPtr);
+                *currPtr = tmp;
                 swapped = true;
             }
-            current = current->next;  // ไปยัง node ถัดไป
+
+            currPtr = &((*currPtr)->next);
         }
-        lastSorted = current;  // node ล่าสุดที่จัดเรียงเสร็จแล้ว
-    } while (swapped);  // ถ้ายังมีการสลับตำแหน่งให้ทำซ้ำ
+    } while (swapped);
 }
 
-void writeDataToFileTruncateLL(LL& list, const string& filename) {
-    ofstream fout(filename, ios::trunc);  // ใช้ ios::trunc เพื่อเขียนทับไฟล์เดิม
-    if (!fout) {
-        cout << "Cannot open file to write." << endl;
-        return;
+void removePastLL(NODE*& head) {
+    while (head && !isFutureLL(dynamic_cast<Time*>(head))) {
+        NODE* temp = head;
+        head = head->move_next();
+        delete temp;
     }
-    
-    Time* current = list.hol;
-    while (current != nullptr) {
-        fout << current->year << " " << current->month << " " << current->day << " "
-             << current->name << " " << current->hour << " " << current->minute << " "
-             << current->second << endl;
-        current = current->next;
+
+    NODE* curr = head;
+    while (curr && curr->move_next()) {
+        Time* nextTime = dynamic_cast<Time*>(curr->move_next());
+        if (!isFutureLL(nextTime)) {
+            NODE* temp = curr->move_next();
+            curr->set_next(temp->move_next());
+            delete temp;
+        } else {
+            curr = curr->move_next();
+        }
     }
-    
+}
+
+void writeToFileFromListLL(NODE* head, const std::string& filename) {
+    std::ofstream fout(filename);
+    Time* t;
+    for (NODE* curr = head; curr; curr = curr->move_next()) {
+        t = dynamic_cast<Time*>(curr);
+        if (t) {
+            fout << t->getYear() << " " << t->getMonth() << " " << t->getDay() << " "
+                 << t->getName() << " " << t->getHour() << " " << t->getMinute() << " " << t->getSecond() << "\n";
+        }
+    }
     fout.close();
 }
-*/    

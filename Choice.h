@@ -5,8 +5,8 @@
 #include <cstdlib>      // สำหรับ atoi()
 #include <ctime>        // สำหรับเวลาปัจจุบัน (time, tm, localtime)
 //#include <Windows.h>    // control terminal
-
-#include"LL.h"
+#include"Node.h"
+#include "LL.h"
 //#include "student.h"
 #include "Time.h"
 #include "Data.h"
@@ -230,64 +230,53 @@ void processChoice(int choice, int argc, char* argv[]) {
         
 
     }
-    /*
-    else if(choice == '7'){
-        ifstream fin("demo4.txt");
-        if (!fin) {
-        cout << "Cannot open demo4.txt" << endl;
-        return;
-        }
     
-         LL A;  // สร้างลิงค์ลิสต์ใหม่
-         NODE* t;
-        int year, month, day, hour, minute, second;
-         string name;
+    else if(choice == '7'){
+        LL list;
+        NODE *t;
+        std::ifstream fin("demo4.txt");
+        if (!fin) {
+            std::cout << "Cannot open demo4.txt" << std::endl;
+          return;
+        }
 
-    // อ่านข้อมูลจากไฟล์และเพิ่มเข้าไปในลิงค์ลิสต์
-         while (fin >> year >> month >> day >> name >> hour >> minute >> second) {
-             t = new Time(year, month, day, hour, minute, second);
-             A.add_node(t);
+        cout<<""<<endl;
+        cout<<""<<endl;
+        cout << "Successfully read to text file." << endl;
+        cout<<"-------"<<endl;
+          //cout<<"-------"<<endl;
+          //sleep(1);
+        cout<<"CONSTRUCTOR:"<<endl;
+        cout<<"=========================================="<<endl;
+
+        int y, m, d, h, mi, s;
+        std::string name;
+        while (fin >> y >> m >> d >> name >> h >> mi >> s) {
+            t = new Time(y, m, d, name, h, mi, s);
+            list.add_node(t);
          }
+        
+        
+        
         fin.close();
 
-        // กรองเฉพาะข้อมูลที่เป็นอนาคต
-         Time* current = A.hol;
-         Time* prev = nullptr;
-         bool hasPastData = false;
+        removePastLL(list.getHol()); // กรองอดีตออก
+        bubbleSortByTimeLL(list.getHol()); // เรียงเวลาใกล้ → ไกล
+        writeToFileFromListLL(list.getHol(), "demo4.txt");
 
-         while (current != nullptr) {
-              if (!isFutureLL(*current)) {  // ถ้าเป็นข้อมูลในอดีต
-                   hasPastData = true;
-                   Time* temp = current;
-                 if (prev == nullptr) {
-                     A.hol = current->next;  // ถ้าเป็นหัวให้ปรับหัวใหม่
-                     current = A.hol;
-                  } else {
-                     prev->next = current->next;
-                     current = current->next;
-                   }
-                   delete temp;
-             } else {
-                prev = current;
-                 current = current->next;
-              }
-         }
+        cout<<"DATALIST:"<<endl;
+        cout<<"=========================================="<<endl;
 
-    // ถ้ามีข้อมูลในอดีต
-         if (hasPastData) {
-             cout << "เราพบข้อมูลที่เลยกำหนด(อดีต) และเราได้นำข้อมูลดังกล่าวออกจากไฟล์ไปเรียบร้อย" << endl;
-          }
+        list.show_all(); 
 
-    // เรียงข้อมูลที่เป็นอนาคต
-          bubbleSortByTimeLL(A);
+        std::cout << "เรียงและเขียนข้อมูลใหม่ลงไฟล์เรียบร้อยแล้ว" << std::endl;
 
-    // เขียนข้อมูลใหม่ลงไฟล์ (แทนที่ไฟล์เดิม)
-           writeDataToFileTruncateLL(A, "demo4.txt");
-
-         cout << "Filtered and sorted future data written to file." << endl;
-    }
-    */
+        cout<<"DESTRUCTOR:"<<endl;
+        cout<<"=========================================="<<endl;
+}
+    
     else if(choice!='x'){
         cout << "Invalid choice!" << endl;
     }
+
 }
